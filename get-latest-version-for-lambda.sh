@@ -7,6 +7,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 echo "Starting $0"
+LAMBDA_FUNCTION_NAME=$1
 
 # List all versions which are returned as a list (1 version per line). Last line is the latest/greatest versiona number.
 # No pagination or else will only return upto 50 items on 1st page.
@@ -17,8 +18,14 @@ echo "Starting $0"
 #   13
 #
 # Therefore, this command would extract the version number "13"
-currentVersion=$(aws lambda list-versions-by-function --no-paginate --function-name myHelloWorldLambda --query 'Versions[*].[Version]'  --output text | tail -n 1 | cut -f1)
+LATEST_VERSION=$(aws lambda list-versions-by-function --no-paginate --function-name $LAMBDA_FUNCTION_NAME --query 'Versions[*].[Version]'  --output text | tail -n 1 | cut -f1)
 
-echo "Current lastest version published is: $currentVersion"
+# Check if LATEST_VERSION is valid
+if [[ -z "$LATEST_VERSION" || "$LATEST_VERSION" == "\$LATEST" || "$LATEST_VERSION" -le 1 ]]; then
+    # Invalid value, return -1
+    echo -1
+    exit 1
+fi
 
-echo "Exiting $0"
+# Return valid version
+echo "$LATEST_VERSION"
