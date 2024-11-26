@@ -6,7 +6,6 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
-echo "Starting $0"
 LAMBDA_FUNCTION_NAME=$1
 
 # List all versions which are returned as a list (1 version per line). Last line is the latest/greatest versiona number.
