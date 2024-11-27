@@ -49,6 +49,12 @@ OUTPUT=$(aws lambda create-alias \
 if [[ $? -ne 0 ]]; then
     if echo "$OUTPUT" | grep -q "ResourceConflictException"; then
         echo "Function $LAMBDA_FUNCTION_NAME already has an alias with name $ALIAS_NAME that exists. Will update existing alias with latest published version number '$LAMBDA_VERSION'"
+
+	aws lambda update-alias \
+            --function-name $LAMBDA_FUNCTION_NAME \
+            --function-version $LAMBDA_VERSION \
+            --name $ALIAS_NAME
+
     elif echo "$OUTPUT" | grep -q "ResourceNotFoundException"; then
         echo "Function $LAMBDA_FUNCTION_NAME does not exist or no such version was published. Unable to create alias"
         exit 1
