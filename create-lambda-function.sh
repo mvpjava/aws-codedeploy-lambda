@@ -1,5 +1,6 @@
 #!/bin/sh
 
+#Used in class demo with AWS CodeDeploy. This is why some of it is hardcoded.
 echo "Starting $0"
 
 REGION=eu-west-2
@@ -24,9 +25,5 @@ if [[ $? -ne 0 ]]; then
 else
     echo "Function $LAMBDA_FUNCTION_NAME created successfully."
 fi 
-
-#Get latest published version number (needed for AWS CodeDeploy afterwards)
-LATEST_VERSION=$(bash ./get-latest-version-for-lambda.sh $LAMBDA_FUNCTION_NAME)
-echo "LATEST_VERSION = $LATEST_VERSION"
 
 echo "Exiting $0"
