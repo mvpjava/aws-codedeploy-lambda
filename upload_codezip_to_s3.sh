@@ -32,8 +32,5 @@ if ! echo "$S3_URI" | grep -Eq '^s3://'; then
     usage
 fi
 
-
-REGION=eu-west-2
-
-zip myHelloWorldLambda.zip myHelloWorldLambda.py 
-aws s3 cp myHelloWorldLambda.zip s3://codedeploy-lambda/myHelloWorldLambda-cli/ --region $REGION
+zip $ZIP_FILENAME *
+aws s3 cp $ZIP_FILENAME $S3_URI 
