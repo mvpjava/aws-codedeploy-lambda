@@ -19,6 +19,10 @@ LAMBDA_FUNCTION_NAME=$1
 # Therefore, this command would extract the version number "13"
 LATEST_VERSION=$(aws lambda list-versions-by-function --no-paginate --function-name $LAMBDA_FUNCTION_NAME --query 'Versions[*].[Version]'  --output text | tail -n 1 | cut -f1)
 
+if [[ "$LATEST_VERSION" == "\$LATEST" ]]; then
+    echo "No published versions yet, still at \$LATEST"
+fi
+
 # Check if LATEST_VERSION is valid
 if [[ -z "$LATEST_VERSION" || "$LATEST_VERSION" == "\$LATEST" || "$LATEST_VERSION" -le 1 ]]; then
     # Invalid value, return -1
