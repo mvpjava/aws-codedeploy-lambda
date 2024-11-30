@@ -32,6 +32,13 @@ fi
 if [ -z "$LAMBDA_VERSION" ]; then
     echo "No version specified. Using the latest published version."
     LAMBDA_VERSION=$(bash ./get-latest-version-for-lambda.sh $LAMBDA_FUNCTION_NAME)
+
+    if [ "$LAMBDA_VERSION" = "-1" ]; then
+        echo "No version yet published or an error occurred. Probably only \$LATEST un-published version exists"
+        echo "Listing all versions below for you tpo confirm ..."
+        aws lambda list-versions-by-function --no-paginate --function-name $LAMBDA_FUNCTION_NAME --query 'Versions[*].[Version]' --output json
+        exit 1
+    fi
 fi
 
 # Echo for debug (optional)
