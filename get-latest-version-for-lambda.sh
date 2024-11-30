@@ -20,7 +20,7 @@ LAMBDA_FUNCTION_NAME=$1
 LATEST_VERSION=$(aws lambda list-versions-by-function --no-paginate --function-name $LAMBDA_FUNCTION_NAME --query 'Versions[*].[Version]'  --output text | tail -n 1 | cut -f1)
 
 if [[ "$LATEST_VERSION" == "\$LATEST" ]]; then
-    echo "No published versions yet, still at \$LATEST"
+    echo "No published versions yet, still at \$LATEST" >&2
 fi
 
 # Check if LATEST_VERSION is valid
