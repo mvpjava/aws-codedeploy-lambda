@@ -41,12 +41,6 @@ if [ -z "$S3_BUCKET" ] || [ -z "$S3_KEY" ]; then
      exit 1
 fi
 
-# Debugging output
-echo "Parsed S3 Bucket: $S3_BUCKET"
-echo "Parsed S3 Key   : $S3_KEY"
-echo "ZIP FILENAME   : $ZIP_FILENAME"
-
-
 # Create zip file automatically to include the update
 # Check if the helper script exists
 if [ ! -x "./upload_codezip_to_s3.sh" ]; then
@@ -71,7 +65,7 @@ OUTPUT=$(aws lambda update-function-code \
 
 # Check if the creation failed due to the function already existing
 if [[ $? -eq 0 ]]; then
-    echo "Updated function '$LAMBDA_FUNCTION_NAME' in \$LATEST unpublised version"
+    echo "Updated function '$LAMBDA_FUNCTION_NAME' in \$LATEST unpublised version" >&2
 else
     echo "Error occurred. $OUTPUT"
     exit 1 
