@@ -24,10 +24,10 @@ NEW_VERSION=$(aws lambda publish-version \
 
 # Check if the creation failed due to the function already existing
 if echo "$NEW_VERSION" | grep -q "ResourceNotFoundException"; then
-        echo "Error: Lambda function with the name '$LAMBDA_FUNCTION_NAME' does not exists."
+        echo "Error: Lambda function with the name '$LAMBDA_FUNCTION_NAME' does not exists." >&2
         exit 1
 fi
 
-echo "Published '$LAMBDA_FUNCTION_NAME' with new version #: '$NEW_VERSION'."
+echo "Published '$LAMBDA_FUNCTION_NAME' with new version #: '$NEW_VERSION'." >&2
 
-exit 0
+exit $NEW_VERSION
