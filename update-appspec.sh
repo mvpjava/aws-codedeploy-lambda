@@ -83,7 +83,15 @@ echo "Lambda function alias: $LAMBDA_ALIAS"
 echo "Current Lambda function version: $CURRENT_LAMBDA_VERSION"
 echo "Target Lambda function version: $TARGET_LAMBDA_VERSION"
 
-# Verify if alias past in, exists.
+# Verify if lambda function past in exists.
+aws lambda get-function --function-name $LAMBDA_FUNCTION_NAME  > /dev/null 2>&1
+
+if [ $? -ne 0 ]; then
+    echo "Error: Function '$LAMBDA_FUNCTION_NAME does not exist."
+    exit 1
+fi
+
+# Verify if alias past in exists.
 aws lambda get-alias --function-name $LAMBDA_FUNCTION_NAME --name $LAMBDA_ALIAS  > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
@@ -91,7 +99,19 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Verify if current version of lambda function exists.
+ALL_VERSIONS=$(aws lambda list-versions-by-function --no-paginate --function-name $LAMBDA_FUNCTION_NAME --query 'Versions[*].[Version]'  --output text)
 
+if ! echo "$ALL_VERSIONS" | grep -q "$CURRENT_LAMBDA_VERSION"; then
+    echo "Function $LAMBDA_FUNCTION_NAME does NOT have a current version number: '$CURRENT_LAMBDA_VERSION'"
+    exit 1
+fi
+
+# Verify if target version of lambda function exists.
+if ! echo "$ALL_VERSIONS" | grep -q "$TARGET_LAMBDA_VERSION"; then
+    echo "Function $LAMBDA_FUNCTION_NAME does NOT have a target version number: '$TARGET_LAMBDA_VERSION'"
+    exit 1
+fi
 
 currentAliasVersion=$(aws lambda get-alias     \
     --function-name $LAMBDA_FUNCTION_NAME \
