@@ -113,21 +113,14 @@ if ! echo "$ALL_VERSIONS" | grep -q "$TARGET_LAMBDA_VERSION"; then
     exit 1
 fi
 
-currentAliasVersion=$(aws lambda get-alias     \
-    --function-name $LAMBDA_FUNCTION_NAME \
-    --name $LAMBDA_ALIAS                   \
-    --query FunctionVersion               \
-    --output text 2>&1 )
+# Perform text substitutions in appspec.yml
+# Perform in place (-i) substitutions
+sed -i "s/{{LAMBDA_FUNCTION_NAME}}/$LAMBDA_FUNCTION_NAME/g" "$APPSPEC_FILE"
+sed -i "s/{{LAMBDA_ALIAS}}/$LAMBDA_ALIAS/g" "$APPSPEC_FILE"
+sed -i "s/{{CURRENT_LAMBDA_VERSION}}/$CURRENT_LAMBDA_VERSION/g" "$APPSPEC_FILE"
+sed -i "s/{{TARGET_LAMBDA_VERSION}}/$TARGET_LAMBDA_VERSION/g" "$APPSPEC_FILE"
 
-# Check if the alias exists
-if [ -z "$currentAliasVersion" ]; then
-    echo "Alias '$ALIAS_NAME' does not exist for function '$LAMBDA_FUNCTION_NAME'. Exiting $0"
-    exit 1
-fi
+echo "Substitutions completed in $APPSPEC_FILE."
 
-echo "Alias $ALIAS_NAME current pointing to version: '$currentAliasVersion'"
-
-#TODO: Get new version and massage appspec.yml file
-#Still work in progress
 
 echo "Exiting $0"
