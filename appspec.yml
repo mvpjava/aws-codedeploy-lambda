@@ -3,10 +3,10 @@ Resources:
   - myLambdaFunction:
       Type: AWS::Lambda::Function
       Properties:
-        Name: "myHelloWorldLambda"
-        Alias: "hello-world-alias"
-        CurrentVersion: "9"
-        TargetVersion: "10"
+        Name: "{{LAMBDA_FUNCTION_NAME}}"
+        Alias: "{{LAMBDA_ALIAS}}"
+        CurrentVersion: "{{CURRENT_LAMBDA_VERSION}}"
+        TargetVersion: "{{TARGET_LAMBDA_VERSION}}"
 Hooks:
   - BeforeAllowTraffic: "myHelloWorldLambda-BeforeAllowTraffic"
   - AfterAllowTraffic: "myHelloWorldLambda-AfterAllowTraffic"
