@@ -8,5 +8,5 @@ Resources:
         CurrentVersion: "{{CURRENT_LAMBDA_VERSION}}"
         TargetVersion: "{{TARGET_LAMBDA_VERSION}}"
 Hooks:
-  - BeforeAllowTraffic: "myHelloWorldLambda-BeforeAllowTraffic"
-  - AfterAllowTraffic: "myHelloWorldLambda-AfterAllowTraffic"
+  - BeforeAllowTraffic: "{{BEFORE_ALLOW_TRAFFIC_HOOK}}"
+  - AfterAllowTraffic: "{{AFTER_ALLOW_TRAFFIC_HOOK}}"
