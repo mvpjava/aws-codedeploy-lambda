@@ -1,0 +1,12 @@
+version: 0.0
+Resources:
+  - myLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "myHelloWorldLambda"
+        Alias: "hello-world-alias"
+        CurrentVersion: "16"
+        TargetVersion: "17"
+Hooks:
+  - BeforeAllowTraffic: "myHelloWorldLambda-BeforeAllowTraffic"
+  - AfterAllowTraffic: "myHelloWorldLambda-AfterAllowTraffic"
