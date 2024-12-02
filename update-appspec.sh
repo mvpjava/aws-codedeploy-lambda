@@ -42,6 +42,7 @@ LAMBDA_ALIAS="$2"
 CURRENT_LAMBDA_VERSION="$3"
 TARGET_LAMBDA_VERSION="$4"
 APPSPEC_FILE="./appspec.yml"
+APPSPEC_PLACEHOLDERS_FILE="./appspec-placeholder-template.yml"
 
 # Check if --help or -h is passed or if arguments are missing
 if [[ "$1" == "--help" || "$1" == "-h" || $# -lt 4 ]]; then
@@ -115,6 +116,8 @@ fi
 
 # Perform text substitutions in appspec.yml
 # Perform in place (-i) substitutions
+cp "./$APPSPEC_PLACEHOLDERS_FILE" "./$APPSPEC_FILE"
+ 
 sed -i "s/{{LAMBDA_FUNCTION_NAME}}/$LAMBDA_FUNCTION_NAME/g" "$APPSPEC_FILE"
 sed -i "s/{{LAMBDA_ALIAS}}/$LAMBDA_ALIAS/g" "$APPSPEC_FILE"
 sed -i "s/{{CURRENT_LAMBDA_VERSION}}/$CURRENT_LAMBDA_VERSION/g" "$APPSPEC_FILE"
