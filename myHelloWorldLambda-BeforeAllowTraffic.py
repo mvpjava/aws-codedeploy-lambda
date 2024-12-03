@@ -1,5 +1,6 @@
 import boto3
 import json
+import os
 
 def lambda_handler(event, context):
     # Get the CodeDeploy lifecycle event details from the event data
@@ -9,12 +10,17 @@ def lambda_handler(event, context):
     lambda_client = boto3.client("lambda")
     codedeploy_client = boto3.client("codedeploy")
     
-    function_name = "myHelloWorldLambda:hello-world-alias"  # specify the alias to test the new version
-    
+	# Retrieve the Lambda function name and alias from the environment variable
+    function_name = os.environ.get("LAMBDA_FUNCTION_NAME", "myHelloWorldLambda")
+    function_name_alias = os.environ.get("LAMBDA_FUNCTION_ALIAS", "hello-world-alias")
+
+    # Concatenate the function name and alias
+    function_name_with_alias = f"{function_name}:{function_name_alias}"
+
     try:
         # Invoke the Lambda function to test the new version
         response = lambda_client.invoke(
-            FunctionName=function_name,
+            FunctionName=function_name_with_alias,
             InvocationType="RequestResponse",
             Payload=json.dumps({"greeting": "Hello World BeforeAllowTraffic"})
         )
