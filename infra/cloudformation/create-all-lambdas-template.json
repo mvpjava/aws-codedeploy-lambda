@@ -15,7 +15,7 @@
       "HWLambdaFunctionBeforeAllowTraffic": {
         "Type": "AWS::Lambda::Function",
         "Properties": {
-          "FunctionName": "HelloWorldLambda-BeforeAllowTraffic",
+          "FunctionName": "myHelloWorldLambda-BeforeAllowTraffic",
           "Handler": "myHelloWorldLambda-BeforeAllowTraffic.lambda_handler",
           "Runtime": "python3.11",
           "Code": {
@@ -36,7 +36,7 @@
       "HWLambdaFunction":{
         "Type": "AWS::Lambda::Function",
         "Properties": {
-          "FunctionName": "HelloWorldLambda",
+          "FunctionName": "myHelloWorldLambda",
           "Handler": "myHelloWorldLambda.lambda_handler",
           "Runtime": "python3.11",
           "Code": {
@@ -57,7 +57,7 @@
       "HWLambdaFunctionBeforeAfterTraffic":{
         "Type": "AWS::Lambda::Function",
         "Properties": {
-          "FunctionName": "HelloWorldLambda-AfterAllowTraffic",
+          "FunctionName": "myHelloWorldLambda-AfterAllowTraffic",
           "Handler": "myHelloWorldLambda-AfterAllowTraffic.lambda_handler",
           "Runtime": "python3.11",
           "Code": {
