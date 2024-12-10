@@ -32,5 +32,5 @@ if ! echo "$S3_URI" | grep -Eq '^s3://'; then
     usage
 fi
 
-zip $ZIP_FILENAME *
+zip -r $ZIP_FILENAME *
 aws s3 cp $ZIP_FILENAME $S3_URI 
