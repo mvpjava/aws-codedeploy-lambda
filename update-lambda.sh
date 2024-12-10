@@ -57,6 +57,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+S3_KEY="$S3_KEY${ZIP_FILENAME}"
 
 OUTPUT=$(aws lambda update-function-code \
     --function-name  $LAMBDA_FUNCTION_NAME \
