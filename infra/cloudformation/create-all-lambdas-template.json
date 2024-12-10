@@ -1,25 +1,81 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "CloudFormation template to create a Lambda function with code from an S3 bucket.",
+    "Description": "CloudFormation template to create 3 Lambda functions. Two acting as CodeDeploy hooks 'BeforeAllowTraffic' and 'AfterAllowTraffic'. The actual Lambda function to be deployed and both hooks are available in the same zip file in the S3 bucket and S3 Key specified in input parameters",
+    "Parameters": {
+      "S3Bucket": {
+        "Type": "String",
+        "Description": "The name of the S3 bucket where the Lambda code is stored.",
+      },
+      "S3Key": {
+        "Type": "String",
+        "Description": "The key (path) of the Lambda code file in the S3 bucket.",
+      }
+    },    
     "Resources": {
-      "MyLambdaFunctionBeforeAllowTraffic": {
+      "HWLambdaFunctionBeforeAllowTraffic": {
         "Type": "AWS::Lambda::Function",
         "Properties": {
           "FunctionName": "HelloWorldLambda-BeforeAllowTraffic",
           "Handler": "myHelloWorldLambda-BeforeAllowTraffic.lambda_handler",
           "Runtime": "python3.11",
           "Code": {
-            "S3Bucket": "codedeploy-lambda",
-            "S3Key": "myHelloWorldLambda-cli/myHelloWorldLambda.zip"
+            "S3Bucket": {
+              "Ref": "S3Bucket"
+            },
+            "S3Key": {
+              "Ref": "S3Key"
+            }
           },
           "Role": {
-            "Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
+            "Fn::GetAtt": ["HWLambdaExecutionRoleDemo", "Arn"]
           },
           "MemorySize": 128,
           "Timeout": 60
         }
       },
-      "LambdaExecutionRole": {
+      "HWLambdaFunction":{
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "FunctionName": "HelloWorldLambda",
+          "Handler": "myHelloWorldLambda.lambda_handler",
+          "Runtime": "python3.11",
+          "Code": {
+            "S3Bucket": {
+              "Ref": "S3Bucket"
+            },
+            "S3Key": {
+              "Ref": "S3Key"
+            }
+          },
+          "Role": {
+            "Fn::GetAtt": ["HWLambdaExecutionRoleDemo", "Arn"]
+          },
+          "MemorySize": 128,
+          "Timeout": 60
+        }        
+      },
+      "HWLambdaFunctionBeforeAfterTraffic":{
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "FunctionName": "HelloWorldLambda-AfterAllowTraffic",
+          "Handler": "myHelloWorldLambda-AfterAllowTraffic.lambda_handler",
+          "Runtime": "python3.11",
+          "Code": {
+            "S3Bucket": {
+              "Ref": "S3Bucket"
+            },
+            "S3Key": {
+              "Ref": "S3Key"
+            }
+          },
+          "Role": {
+            "Fn::GetAtt": ["HWLambdaExecutionRoleDemo", "Arn"]
+          },
+          "MemorySize": 128,
+          "Timeout": 60
+        }        
+      },
+      "HWLambdaExecutionRoleDemo": {
         "Type": "AWS::IAM::Role",
         "Properties": {
           "AssumeRolePolicyDocument": {
@@ -36,7 +92,7 @@
           },
           "Policies": [
             {
-              "PolicyName": "LambdaDemoExecution",
+              "PolicyName": "HWLambdaDemoExecution",
               "PolicyDocument": {
                 "Version": "2012-10-17",
                 "Statement": [

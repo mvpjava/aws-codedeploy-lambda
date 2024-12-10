@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh 
 
 # Usage message
 usage() {
@@ -9,7 +9,7 @@ usage() {
     echo "  <S3 Bucket Name>               : The name of the S3 bucket (required)."
     echo "  <S3 Bucket Key>                : The key (path) in the S3 bucket for the CloudFormation template (required)."
     echo
-    echo "Example: $0 my-s3-bucket my-folder/mytemplate.yaml"
+    echo "Example: $0 codedeploy-lambda  myHelloWorldLambda-cli/myHelloWorldLambda.zip"
     exit 1
 }
 
